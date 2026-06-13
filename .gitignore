@@ -1,0 +1,10 @@
+# Rust build output (workspace and any nested/legacy crates)
+target/
+
+# Local, machine-specific runtime config the binaries write next to themselves
+/config.yaml
+/config.toml
+
+# Editor / OS cruft
+*.rs.bk
+.DS_Store

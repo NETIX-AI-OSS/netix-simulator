@@ -1,0 +1,131 @@
+name: Release Build
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  linux:
+    name: Build Linux executable
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v6
+      - name: Install Rust toolchain
+        run: |
+          rustup toolchain install stable --profile minimal
+          rustup default stable
+      - name: Install packaging tools
+        run: sudo apt-get update && sudo apt-get install -y zip
+      - name: Check formatting
+        run: cargo fmt --all -- --check
+      - name: Build release binary
+        run: cargo build --locked --release
+      - name: Package
+        shell: bash
+        run: |
+          set -euo pipefail
+          tag="${GITHUB_REF_NAME}"
+          package="netix-simulator-${tag}-linux-x86_64"
+          mkdir -p "dist/${package}"
+          cp target/release/simulator "dist/${package}/"
+          cp README.md "dist/${package}/" 2>/dev/null || true
+          (cd "dist/${package}" && zip -r "../${package}.zip" .)
+      - uses: actions/upload-artifact@v7
+        with:
+          name: netix-simulator-linux-x86_64
+          path: dist/*.zip
+          if-no-files-found: error
+
+  windows:
+    name: Build Windows executable (signed)
+    runs-on: windows-2025-vs2026
+    # Azure Trusted Signing via GitHub OIDC; the Entra app federated credential
+    # must be scoped to this repo's `release` environment.
+    environment: release
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v6
+      - name: Install Rust toolchain
+        run: |
+          rustup toolchain install stable --profile minimal
+          rustup default stable
+      - name: Check formatting
+        run: cargo fmt --all -- --check
+      - name: Build release binary
+        env:
+          RUSTFLAGS: "-C target-feature=+crt-static"
+        run: cargo build --locked --release
+      - name: Azure login (OIDC, no secrets stored)
+        uses: azure/login@v3
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      - name: Sign with Azure Trusted Signing
+        uses: azure/trusted-signing-action@v2
+        with:
+          endpoint: ${{ vars.TRUSTED_SIGNING_ENDPOINT }}
+          trusted-signing-account-name: ${{ vars.TRUSTED_SIGNING_ACCOUNT_NAME }}
+          certificate-profile-name: ${{ vars.TRUSTED_SIGNING_PROFILE_NAME }}
+          files-folder: ${{ github.workspace }}\target\release
+          files-folder-filter: exe
+          files-folder-recurse: false
+          file-digest: SHA256
+          timestamp-rfc3161: http://timestamp.acs.microsoft.com/
+          timestamp-digest: SHA256
+      - name: Verify signature
+        shell: pwsh
+        run: |
+          $sig = Get-AuthenticodeSignature "target\release\simulator.exe"
+          $sig | Format-List
+          if ($sig.Status -ne 'Valid') {
+            Write-Error "Signature for simulator.exe is '$($sig.Status)', expected 'Valid'"
+            exit 1
+          }
+      - name: Package
+        shell: pwsh
+        run: |
+          $tag = $env:GITHUB_REF_NAME
+          $package = "netix-simulator-$tag-windows-x86_64"
+          $dir = Join-Path "dist" $package
+          New-Item -ItemType Directory -Force -Path $dir | Out-Null
+          Copy-Item "target\release\simulator.exe" $dir
+          if (Test-Path "README.md") { Copy-Item "README.md" $dir }
+          Compress-Archive -Path (Join-Path $dir "*") -DestinationPath "dist\$package.zip" -Force
+      - uses: actions/upload-artifact@v7
+        with:
+          name: netix-simulator-windows-x86_64
+          path: dist/*.zip
+          if-no-files-found: error
+
+  publish:
+    name: Publish GitHub release
+    needs: [linux, windows]
+    runs-on: ubuntu-24.04
+    permissions:
+      actions: read
+      contents: write
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v8
+        with:
+          path: dist/artifacts
+      - name: Create or update release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          tag="${GITHUB_REF_NAME}"
+          if ! gh release view "${tag}" >/dev/null 2>&1; then
+            gh release create "${tag}" --title "${tag}" --notes "Automated release build for ${tag}"
+          fi
+          mapfile -d '' files < <(find dist/artifacts -name '*.zip' -print0)
+          gh release upload "${tag}" "${files[@]}" --clobber

@@ -1,0 +1,15 @@
+NETIX Simulator
+Copyright (c) NETIX
+
+This product is licensed under the Apache License, Version 2.0 (see LICENSE).
+
+------------------------------------------------------------------------------
+Third-party components with different licenses
+------------------------------------------------------------------------------
+
+1. async-opcua (and its async-opcua-* sub-crates)
+   Pulled in transitively via the proto-opcua crate (from netix-protocol-core)
+   to provide OPC UA simulation support.
+   License: MPL-2.0 (Mozilla Public License 2.0), a file-level copyleft license.
+   Depending on / linking these crates from this Apache-2.0 binary is permitted
+   by the MPL-2.0. This project does not modify the MPL-2.0 source files.
