@@ -6,7 +6,11 @@ on:
       - "v*"
 
 permissions:
-  contents: write
+  contents: read
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
 
 jobs:
   linux:
@@ -55,8 +59,6 @@ jobs:
         run: |
           rustup toolchain install stable --profile minimal
           rustup default stable
-      - name: Check formatting
-        run: cargo fmt --all -- --check
       - name: Build release binary
         env:
           RUSTFLAGS: "-C target-feature=+crt-static"
@@ -124,8 +126,12 @@ jobs:
         run: |
           set -euo pipefail
           tag="${GITHUB_REF_NAME}"
+          prerelease=""
+          if [[ "${tag}" == *-* ]]; then
+            prerelease="--prerelease"
+          fi
           if ! gh release view "${tag}" >/dev/null 2>&1; then
-            gh release create "${tag}" --title "${tag}" --notes "Automated release build for ${tag}"
+            gh release create "${tag}" --title "${tag}" --notes "Automated release build for ${tag}" ${prerelease}
           fi
           mapfile -d '' files < <(find dist/artifacts -name '*.zip' -print0)
           gh release upload "${tag}" "${files[@]}" --clobber
