@@ -3,6 +3,7 @@ name = "simulator"
 version = "0.1.0"
 edition = "2021"
 license = "Apache-2.0"
+rust-version = "1.93"
 description = "Generic, extensible industrial-protocol device simulator (BACnet/Modbus/OPC UA)."
 repository = "https://github.com/NETIX-AI-OSS/netix-simulator"
 default-run = "simulator"
@@ -17,10 +18,10 @@ winresource = "0.1"
 [dependencies]
 # Shared adapter libraries, pulled from netix-protocol-core (commit pinned in
 # Cargo.lock). Only the simulator-side (`sim`) feature of each adapter is enabled.
-sim-core = { git = "https://github.com/NETIX-AI-OSS/netix-protocol-core", branch = "main" }
-proto-bacnet = { git = "https://github.com/NETIX-AI-OSS/netix-protocol-core", branch = "main", features = ["sim"] }
-proto-modbus = { git = "https://github.com/NETIX-AI-OSS/netix-protocol-core", branch = "main", features = ["sim"] }
-proto-opcua = { git = "https://github.com/NETIX-AI-OSS/netix-protocol-core", branch = "main", features = ["sim"] }
+sim-core = { git = "https://github.com/NETIX-AI-OSS/netix-protocol-core", tag = "v0.1.1-core" }
+proto-bacnet = { git = "https://github.com/NETIX-AI-OSS/netix-protocol-core", tag = "v0.1.1-core", features = ["sim"] }
+proto-modbus = { git = "https://github.com/NETIX-AI-OSS/netix-protocol-core", tag = "v0.1.1-core", features = ["sim"] }
+proto-opcua = { git = "https://github.com/NETIX-AI-OSS/netix-protocol-core", tag = "v0.1.1-core", features = ["sim"] }
 
 log = "0.4"
 env_logger = "0.11"
