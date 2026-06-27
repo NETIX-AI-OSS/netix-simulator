@@ -11,6 +11,9 @@ default-run = "simulator"
 name = "simulator"
 path = "src/main.rs"
 
+[build-dependencies]
+winresource = "0.1"
+
 [dependencies]
 # Shared adapter libraries, pulled from netix-protocol-core (commit pinned in
 # Cargo.lock). Only the simulator-side (`sim`) feature of each adapter is enabled.
