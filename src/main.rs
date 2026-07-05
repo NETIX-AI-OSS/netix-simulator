@@ -6,7 +6,8 @@
 //! a one-line `register_*` call.
 
 use sim_core::{
-    bootstrap_config, build_simulation, detect_run_mode, parse_args, run, RunMode, SimRegistry,
+    bootstrap_config, build_simulation, detect_run_mode, emit_republisher_config, parse_args, run,
+    RunMode, SimRegistry,
 };
 
 #[cfg(windows)]
@@ -37,8 +38,34 @@ fn build_registry() -> SimRegistry {
 }
 
 fn main() {
-    let (no_tui_flag, config_path) = parse_args();
-    let mode = detect_run_mode(no_tui_flag);
+    let args = parse_args();
+    let config_path = args.config_path.clone();
+
+    // `--emit-republisher-config PATH`: load the config, write a matching
+    // republisher config.toml, and exit without serving. The broker host comes
+    // from REPUBLISHER_MQTT_HOST (a clearly-flagged placeholder otherwise).
+    if let Some(out_path) = args.emit_republisher_config.as_ref() {
+        let config = match bootstrap_config(&config_path) {
+            Ok(config) => config,
+            Err(e) => fatal(format!(
+                "Failed to load config from {}: {e}",
+                config_path.display()
+            )),
+        };
+        let mqtt_host = std::env::var("REPUBLISHER_MQTT_HOST")
+            .unwrap_or_else(|_| "REPLACE_WITH_PLATFORM_MQTT_HOST".to_string());
+        let toml = match emit_republisher_config(&config, &mqtt_host) {
+            Ok(toml) => toml,
+            Err(e) => fatal(format!("Failed to build republisher config: {e}")),
+        };
+        if let Err(e) = std::fs::write(out_path, &toml) {
+            fatal(format!("Failed to write {}: {e}", out_path.display()));
+        }
+        eprintln!("Wrote republisher config to {}", out_path.display());
+        return;
+    }
+
+    let mode = detect_run_mode(args.no_tui);
 
     if mode == RunMode::Headless {
         env_logger::init_from_env(env_logger::Env::default().default_filter_or("info"));
