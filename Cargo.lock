@@ -1481,7 +1481,7 @@ dependencies = [
 [[package]]
 name = "proto-api"
 version = "0.1.0"
-source = "git+https://github.com/NETIX-AI-OSS/netix-protocol-core?branch=main#ae83bdd879ec879eb942cfcf35ab3dfc9f53cd28"
+source = "git+https://github.com/NETIX-AI-OSS/netix-protocol-core?tag=v0.1.2-core#186c3a4cf300ecc40dae0bfdd1b962891d6ea5aa"
 dependencies = [
  "serde",
  "serde_json",
@@ -1490,7 +1490,7 @@ dependencies = [
 [[package]]
 name = "proto-bacnet"
 version = "0.1.0"
-source = "git+https://github.com/NETIX-AI-OSS/netix-protocol-core?branch=main#ae83bdd879ec879eb942cfcf35ab3dfc9f53cd28"
+source = "git+https://github.com/NETIX-AI-OSS/netix-protocol-core?tag=v0.1.2-core#186c3a4cf300ecc40dae0bfdd1b962891d6ea5aa"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -1507,7 +1507,7 @@ dependencies = [
 [[package]]
 name = "proto-modbus"
 version = "0.1.0"
-source = "git+https://github.com/NETIX-AI-OSS/netix-protocol-core?branch=main#ae83bdd879ec879eb942cfcf35ab3dfc9f53cd28"
+source = "git+https://github.com/NETIX-AI-OSS/netix-protocol-core?tag=v0.1.2-core#186c3a4cf300ecc40dae0bfdd1b962891d6ea5aa"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -1522,7 +1522,7 @@ dependencies = [
 [[package]]
 name = "proto-opcua"
 version = "0.1.0"
-source = "git+https://github.com/NETIX-AI-OSS/netix-protocol-core?branch=main#ae83bdd879ec879eb942cfcf35ab3dfc9f53cd28"
+source = "git+https://github.com/NETIX-AI-OSS/netix-protocol-core?tag=v0.1.2-core#186c3a4cf300ecc40dae0bfdd1b962891d6ea5aa"
 dependencies = [
  "anyhow",
  "async-opcua",
@@ -1842,7 +1842,7 @@ dependencies = [
 [[package]]
 name = "sim-core"
 version = "0.1.0"
-source = "git+https://github.com/NETIX-AI-OSS/netix-protocol-core?branch=main#ae83bdd879ec879eb942cfcf35ab3dfc9f53cd28"
+source = "git+https://github.com/NETIX-AI-OSS/netix-protocol-core?tag=v0.1.2-core#186c3a4cf300ecc40dae0bfdd1b962891d6ea5aa"
 dependencies = [
  "anyhow",
  "async-trait",
