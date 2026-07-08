@@ -31,6 +31,15 @@ protocols:
 
 Omitting `protocols:` defaults to BACnet on 47808.
 
+## Releases
+
+Tagged releases (`v*`) publish platform zip files only — for example
+`netix-simulator-<tag>-linux-x86_64.zip`, `...-linux-aarch64.zip`,
+`...-macos-x86_64.zip`, `...-macos-aarch64.zip`, and `...-windows-x86_64.zip`
+— plus a `SHA256SUMS` checksum file and build-provenance attestation. GitHub's
+auto-generated "Source code" archives are removed; extract the zip for your
+platform and run `simulator` (Linux/macOS) or `simulator.exe` (Windows).
+
 ### Protocol notes
 
 - **BACnet/IP** — Who-Is/I-Am discovery, object-list browse, ReadProperty(Multiple).
