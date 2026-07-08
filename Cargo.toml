@@ -18,10 +18,10 @@ winresource = "0.1"
 [dependencies]
 # Shared adapter libraries, pulled from netix-protocol-core (commit pinned in
 # Cargo.lock). Only the simulator-side (`sim`) feature of each adapter is enabled.
-sim-core = { git = "https://github.com/NETIX-AI-OSS/netix-protocol-core", tag = "v0.1.1-core" }
-proto-bacnet = { git = "https://github.com/NETIX-AI-OSS/netix-protocol-core", tag = "v0.1.1-core", features = ["sim"] }
-proto-modbus = { git = "https://github.com/NETIX-AI-OSS/netix-protocol-core", tag = "v0.1.1-core", features = ["sim"] }
-proto-opcua = { git = "https://github.com/NETIX-AI-OSS/netix-protocol-core", tag = "v0.1.1-core", features = ["sim"] }
+sim-core = { git = "https://github.com/NETIX-AI-OSS/netix-protocol-core", branch = "main" }
+proto-bacnet = { git = "https://github.com/NETIX-AI-OSS/netix-protocol-core", branch = "main", features = ["sim"] }
+proto-modbus = { git = "https://github.com/NETIX-AI-OSS/netix-protocol-core", branch = "main", features = ["sim"] }
+proto-opcua = { git = "https://github.com/NETIX-AI-OSS/netix-protocol-core", branch = "main", features = ["sim"] }
 
 log = "0.4"
 env_logger = "0.11"
