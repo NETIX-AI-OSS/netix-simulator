@@ -263,6 +263,10 @@ ROLE_SIM: dict[str, tuple[str, str | None, dict]] = {
         {"kind": "temp_control", "setpoint": 17.0, "gain": 0.05, "noise": 0.2, "initial": 17.0}),
     "secondary-side-outlet-temperature": ("analog_input", "degrees_celsius",
         {"kind": "temp_control", "setpoint": 16.5, "gain": 0.05, "noise": 0.2, "initial": 16.5}),
+    # Heat-recovery wheel run status (FAHU detail HRW widget; numeric binary —
+    # the value shape that motivated viz-ui's normalizeBinaryStatus fix).
+    "hrw-run-status": ("binary_input", None,
+        {"kind": "binary_schedule", "on_when_occupancy_gt": 0.05}),
     # Manhole sensors (/utilities/manhole class-driven view): covers stay
     # closed; the water level drifts within the pit.
     "cover-status": ("binary_input", None,

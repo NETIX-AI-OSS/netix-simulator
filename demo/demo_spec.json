@@ -1157,6 +1157,7 @@
       "cooling-valve-cmd",
       "outside-air-damper-cmd",
       "supply-fan-run-status",
+      "hrw-run-status",
       "supply-fan-vfd-speed",
       "zone-co2",
       "outside-air-temperature",

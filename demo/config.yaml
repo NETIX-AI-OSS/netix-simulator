@@ -36,6 +36,7 @@ templates:
       - { label: "cooling-valve-cmd", object_type: analog_output, units: percent, profile: { kind: occupancy_linked, base: 10.0, peak_delta: 70.0, noise: 5.0 } }
       - { label: "outside-air-damper-cmd", object_type: analog_output, units: percent, profile: { kind: occupancy_linked, base: 15.0, peak_delta: 25.0, noise: 3.0 } }
       - { label: "supply-fan-run-status", object_type: binary_input, profile: { kind: binary_schedule, on_when_occupancy_gt: 0.05 } }
+      - { label: "hrw-run-status", object_type: binary_input, profile: { kind: binary_schedule, on_when_occupancy_gt: 0.05 } }
       - { label: "supply-fan-vfd-speed", object_type: analog_input, units: percent, profile: { kind: occupancy_linked, base: 30.0, peak_delta: 55.0, noise: 4.0 } }
       - { label: "zone-co2", object_type: analog_input, units: parts_per_million, profile: { kind: occupancy_linked, base: 450.0, peak_delta: 500.0, noise: 25.0 } }
       - { label: "outside-air-temperature", object_type: analog_input, units: degrees_celsius, profile: { kind: sine, base: 30.0, amplitude: 6.0, period_secs: 86400.0 } }
