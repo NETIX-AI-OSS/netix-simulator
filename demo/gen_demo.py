@@ -5,14 +5,14 @@ The demo tenant's cross-service id contract lives in ``demo_spec.json`` (vendore
 byte-identical from the backend). Every demo equipment asset carries a stable
 ``tag_identifier`` and belongs to a *family*; each family exposes a fixed set of
 Haystack point *roles* (``haystack_point_roles``). The platform historises each
-point under the tag name ``<tag_identifier>-<role>``.
+point under the tag name ``<tag_identifier>/<role>``.
 
 This generator emits one simulator *template* per family (its points are the
 family's roles) and one *instance* per equipment (``name_prefix`` = the
 equipment's ``tag_identifier``, ``count`` = 1). The companion republisher config
 (produced by ``simulator --emit-republisher-config``) then maps every polled
 BACnet point to envelope ``id = <tag_identifier>`` / ``pointName = <role>``, so
-the stormbreaker demo worker writes exactly ``<tag_identifier>-<role>`` — the tag
+the stormbreaker demo worker writes exactly ``<tag_identifier>/<role>`` — the tag
 the viz dashboards read. See demo/README.md for the full pipeline.
 
 Usage:

@@ -17,7 +17,7 @@ netix-simulator  --(BACnet)-->  netix-republisher  --(MQTT)-->  platform broker
            258 points                       "points":[{"pointName":"<role>","data",...}]}
                                                      |
    stormbreaker simulated-data-9999 worker  <────────┘
-     parser: tag_name = "<id>-<pointName>" = "<tag_identifier>-<role>"
+     parser: tag_name = "<id>/<pointName>" = "<tag_identifier>/<role>"
         |
         └─ Kafka stormbreaker_nc9999 → data-service historian _nc9999
                → viz asset-tag card view (asset_id → tag_ids → latest) → dashboards
@@ -25,9 +25,10 @@ netix-simulator  --(BACnet)-->  netix-republisher  --(MQTT)-->  platform broker
 
 The demo contract is `demo_spec.json` (vendored from the backend). Each equipment
 has a `tag_identifier` and a set of Haystack point `roles`; tag-service seeds one
-historised tag `<tag_identifier>-<role>` per point, linked to the asset. The
+historised tag `<tag_identifier>/<role>` per point, linked to the asset. The
 republisher publishes `id = <tag_identifier>` / `pointName = <role>`, so the
-worker writes exactly that tag name — the one the dashboards read.
+worker writes exactly that tag name (the platform Device/Point separator the viz
+frontend splits on) — the one the dashboards read.
 
 ## Files
 
@@ -81,7 +82,7 @@ python manage.py seed_demo_worker            # after seed_demo_tenant
 ```
 
 This creates the `simulated-data-9999` worker (MQTT `/Netix/Sim/Device/#` → Kafka
-`stormbreaker_nc9999`), installs the `<id>-<pointName>` parser, and **pre-links** a
+`stormbreaker_nc9999`), installs the `<id>/<pointName>` parser, and **pre-links** a
 `Timeseries` per demo tag (via `bulk_create`, so no `post_save` upsert clobbers the
 seeded tag's curated metadata). Run it after the tag-service demo seed so the tags
 exist to link; re-run after adding tags.
