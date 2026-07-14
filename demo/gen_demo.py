@@ -233,8 +233,21 @@ ROLE_SIM: dict[str, tuple[str, str | None, dict]] = {
         {"kind": "constant_bool", "value": False}),
     "pump-index": ("analog_input", None,
         {"kind": "random_walk", "base": 1.0, "step": 0.2, "min": 0.0, "max": 3.0}),
+    "vfd-speed-command": ("analog_input", "percent",
+        {"kind": "occupancy_linked", "base": 35.0, "peak_delta": 45.0, "noise": 1.0}),
     "vfd-speed-feedback": ("analog_input", "percent",
         {"kind": "occupancy_linked", "base": 35.0, "peak_delta": 45.0, "noise": 4.0}),
+    # Booster pumps carry booster-prefixed roles so their point segments stay
+    # unique within a pump-room card view (sump pumps own the pump-* roles) —
+    # the 2D room schematic binds pens by segment and needs no collisions.
+    "booster-run-status": ("binary_input", None,
+        {"kind": "binary_schedule", "on_when_occupancy_gt": 0.05}),
+    "booster-trip-status": ("binary_input", None,
+        {"kind": "constant_bool", "value": False}),
+    "booster-system-enable": ("binary_input", None,
+        {"kind": "constant_bool", "value": True}),
+    "booster-index": ("analog_input", None,
+        {"kind": "random_walk", "base": 1.0, "step": 0.2, "min": 0.0, "max": 3.0}),
     # Heat-exchanger detailed widgets (exact display-name matches).
     "hex-system-enable": ("binary_input", None,
         {"kind": "constant_bool", "value": True}),
@@ -250,6 +263,12 @@ ROLE_SIM: dict[str, tuple[str, str | None, dict]] = {
         {"kind": "temp_control", "setpoint": 17.0, "gain": 0.05, "noise": 0.2, "initial": 17.0}),
     "secondary-side-outlet-temperature": ("analog_input", "degrees_celsius",
         {"kind": "temp_control", "setpoint": 16.5, "gain": 0.05, "noise": 0.2, "initial": 16.5}),
+    # Manhole sensors (/utilities/manhole class-driven view): covers stay
+    # closed; the water level drifts within the pit.
+    "cover-status": ("binary_input", None,
+        {"kind": "constant_bool", "value": False}),
+    "water-level": ("analog_input", "millimeters",
+        {"kind": "random_walk", "base": 250.0, "step": 4.0, "min": 50.0, "max": 600.0}),
 }
 
 # Life-safety / standby equipment sits idle unless called. Override the shared

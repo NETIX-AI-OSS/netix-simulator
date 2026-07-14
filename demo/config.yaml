@@ -278,11 +278,18 @@ templates:
   booster_pump:
     description: "Water Supply Booster Pump"
     points:
-      - { label: "pump-run-status", object_type: binary_input, profile: { kind: binary_schedule, on_when_occupancy_gt: 0.05 } }
-      - { label: "pump-trip-status", object_type: binary_input, profile: { kind: constant_bool, value: false } }
-      - { label: "pump-system-enable", object_type: binary_input, profile: { kind: constant_bool, value: true } }
-      - { label: "pump-index", object_type: analog_input, profile: { kind: random_walk, base: 1.0, step: 0.2, min: 0.0, max: 3.0 } }
+      - { label: "booster-run-status", object_type: binary_input, profile: { kind: binary_schedule, on_when_occupancy_gt: 0.05 } }
+      - { label: "booster-trip-status", object_type: binary_input, profile: { kind: constant_bool, value: false } }
+      - { label: "booster-system-enable", object_type: binary_input, profile: { kind: constant_bool, value: true } }
+      - { label: "booster-index", object_type: analog_input, profile: { kind: random_walk, base: 1.0, step: 0.2, min: 0.0, max: 3.0 } }
+      - { label: "vfd-speed-command", object_type: analog_input, units: percent, profile: { kind: occupancy_linked, base: 35.0, peak_delta: 45.0, noise: 1.0 } }
       - { label: "vfd-speed-feedback", object_type: analog_input, units: percent, profile: { kind: occupancy_linked, base: 35.0, peak_delta: 45.0, noise: 4.0 } }
+
+  manhole:
+    description: "Manhole Sensor"
+    points:
+      - { label: "cover-status", object_type: binary_input, profile: { kind: constant_bool, value: false } }
+      - { label: "water-level", object_type: analog_input, units: millimeters, profile: { kind: random_walk, base: 250.0, step: 4.0, min: 50.0, max: 600.0 } }
 
 instances:
   - { template: ahu, name_prefix: "ahu-12", count: 1, zone: "demo-bldg-tower-a" }
@@ -399,6 +406,9 @@ instances:
   - { template: booster_pump, name_prefix: "booster-01", count: 1, zone: "demo-bldg-tower-a" }
   - { template: booster_pump, name_prefix: "booster-02", count: 1, zone: "demo-bldg-tower-b" }
   - { template: booster_pump, name_prefix: "booster-03", count: 1, zone: "demo-bldg-terminal-1" }
+  - { template: manhole, name_prefix: "manhole-01", count: 1, zone: "demo-bldg-tower-a" }
+  - { template: manhole, name_prefix: "manhole-02", count: 1, zone: "demo-bldg-atrium" }
+  - { template: manhole, name_prefix: "manhole-03", count: 1, zone: "demo-bldg-terminal-1" }
 
 protocols:
   - { id: bacnet, port: 47808 }

@@ -1,6 +1,6 @@
 {
-  "version": 3,
-  "description": "NETIX demo tenant (org 9999) cross-service contract. v3: Systems-sections coverage \u2014 >=3 devices per viz Systems page, UI-matching point roles, base-unit hierarchy for displayParent sections, booster-pump family.",
+  "version": 4,
+  "description": "NETIX demo tenant (org 9999) cross-service contract. v4: adds manhole sensors (class-driven /utilities/manhole) and booster-pump VFD speed command; v3: Systems-sections coverage \u2014 >=3 devices per viz Systems page, UI-matching point roles, base-unit hierarchy for displayParent sections, booster-pump family.",
   "organization": {
     "id": 9999,
     "name": "Demo"
@@ -997,6 +997,30 @@
       "tag_identifier": "booster-03",
       "building": "demo-bldg-terminal-1",
       "base_unit": "demo-bu-plantroom-t1"
+    },
+    {
+      "family": "manhole",
+      "logical_id": 849,
+      "name": "demo-manhole-01",
+      "display_name": "Manhole SW-01 Tower-A",
+      "tag_identifier": "manhole-01",
+      "building": "demo-bldg-tower-a"
+    },
+    {
+      "family": "manhole",
+      "logical_id": 850,
+      "name": "demo-manhole-02",
+      "display_name": "Manhole SW-02 Atrium",
+      "tag_identifier": "manhole-02",
+      "building": "demo-bldg-atrium"
+    },
+    {
+      "family": "manhole",
+      "logical_id": 851,
+      "name": "demo-manhole-03",
+      "display_name": "Manhole SW-03 Terminal 1",
+      "tag_identifier": "manhole-03",
+      "building": "demo-bldg-terminal-1"
     }
   ],
   "asset_classes": {
@@ -1119,6 +1143,10 @@
     "booster_pump": {
       "name": "demo-class-booster-pump",
       "display_name": "Water Supply Booster Pump"
+    },
+    "manhole": {
+      "name": "demo-class-manhole",
+      "display_name": "Manhole Sensor"
     }
   },
   "haystack_point_roles": {
@@ -1313,11 +1341,16 @@
       "consumption-volume"
     ],
     "booster_pump": [
-      "pump-run-status",
-      "pump-trip-status",
-      "pump-system-enable",
-      "pump-index",
+      "booster-run-status",
+      "booster-trip-status",
+      "booster-system-enable",
+      "booster-index",
+      "vfd-speed-command",
       "vfd-speed-feedback"
+    ],
+    "manhole": [
+      "cover-status",
+      "water-level"
     ]
   },
   "users": [
