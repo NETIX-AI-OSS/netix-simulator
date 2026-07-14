@@ -38,12 +38,29 @@ templates:
       - { label: "supply-fan-run-status", object_type: binary_input, profile: { kind: binary_schedule, on_when_occupancy_gt: 0.05 } }
       - { label: "supply-fan-vfd-speed", object_type: analog_input, units: percent, profile: { kind: occupancy_linked, base: 30.0, peak_delta: 55.0, noise: 4.0 } }
       - { label: "zone-co2", object_type: analog_input, units: parts_per_million, profile: { kind: occupancy_linked, base: 450.0, peak_delta: 500.0, noise: 25.0 } }
+      - { label: "outside-air-temperature", object_type: analog_input, units: degrees_celsius, profile: { kind: sine, base: 30.0, amplitude: 6.0, period_secs: 86400.0 } }
+      - { label: "supply-air-temperature", object_type: analog_input, units: degrees_celsius, profile: { kind: temp_control, setpoint: 14.0, gain: 0.08, outside_influence: 0.1, noise: 0.3, initial: 14.0 } }
+      - { label: "return-air-temperature", object_type: analog_input, units: degrees_celsius, profile: { kind: temp_control, setpoint: 23.0, gain: 0.06, noise: 0.2, initial: 23.0 } }
+      - { label: "pre-filter-status", object_type: binary_input, profile: { kind: constant_bool, value: false } }
+      - { label: "bag-filter-status", object_type: binary_input, profile: { kind: constant_bool, value: false } }
+      - { label: "supply-fan-trip-status", object_type: binary_input, profile: { kind: constant_bool, value: false } }
+      - { label: "supply-fan-hoa-status", object_type: binary_input, profile: { kind: constant_bool, value: true } }
+      - { label: "supply-air-damper-command", object_type: analog_output, units: percent, profile: { kind: occupancy_linked, base: 20.0, peak_delta: 60.0, noise: 4.0 } }
+      - { label: "supply-air-damper-status", object_type: analog_input, units: percent, profile: { kind: occupancy_linked, base: 20.0, peak_delta: 60.0, noise: 4.0 } }
+      - { label: "valve-command", object_type: analog_output, units: percent, profile: { kind: occupancy_linked, base: 15.0, peak_delta: 65.0, noise: 5.0 } }
+      - { label: "supply-air-flow-status", object_type: binary_input, profile: { kind: binary_schedule, on_when_occupancy_gt: 0.05 } }
 
   meter:
     description: "PMU"
     points:
       - { label: "active-power", object_type: analog_input, units: kilowatts, profile: { kind: occupancy_linked, base: 40.0, peak_delta: 260.0, noise: 15.0 } }
       - { label: "energy-accumulator", object_type: analog_input, units: kilowatt_hours, profile: { kind: integrator, rate_source: active-power, scale: 0.000277778 } }
+      - { label: "energy", object_type: analog_input, units: kilowatt_hours, profile: { kind: integrator, rate_source: active-power, scale: 0.000277778 } }
+      - { label: "frequency", object_type: analog_input, units: hertz, profile: { kind: random_walk, base: 50.0, step: 0.02, min: 49.7, max: 50.3 } }
+      - { label: "power-factor", object_type: analog_input, profile: { kind: random_walk, base: 0.92, step: 0.005, min: 0.85, max: 0.99 } }
+      - { label: "phase-power", object_type: analog_input, units: kilowatts, profile: { kind: occupancy_linked, base: 13.0, peak_delta: 85.0, noise: 5.0 } }
+      - { label: "voltage", object_type: analog_input, units: volts, profile: { kind: random_walk, base: 415.0, step: 1.0, min: 400.0, max: 430.0 } }
+      - { label: "current", object_type: analog_input, units: amperes, profile: { kind: occupancy_linked, base: 60.0, peak_delta: 340.0, noise: 20.0 } }
 
   zone:
     description: "Comfort Zone"
@@ -58,6 +75,7 @@ templates:
       - { label: "fill-level", object_type: analog_input, units: percent, profile: { kind: ramp, start: 0.0, end: 100.0, period_secs: 86400.0 } }
       - { label: "battery-level", object_type: analog_input, units: percent, profile: { kind: random_walk, base: 85.0, step: 0.1, min: 60.0, max: 100.0 } }
       - { label: "tilt-alarm", object_type: binary_input, profile: { kind: binary_schedule, on_when_occupancy_gt: 2.0 } }
+      - { label: "temp", object_type: analog_input, units: degrees_celsius, profile: { kind: temp_control, setpoint: 23.5, gain: 0.05, outside_influence: 0.1, noise: 0.2, initial: 23.5 } }
 
   weather_station:
     description: "Weather Station"
@@ -72,6 +90,9 @@ templates:
     points:
       - { label: "lift-run-status", object_type: binary_input, profile: { kind: binary_schedule, on_when_occupancy_gt: 0.05 } }
       - { label: "lift-car-position", object_type: analog_input, profile: { kind: random_walk, base: 5.0, step: 1.0, min: 1.0, max: 20.0 } }
+      - { label: "lift-power", object_type: binary_input, profile: { kind: constant_bool, value: true } }
+      - { label: "lift-fault", object_type: binary_input, profile: { kind: constant_bool, value: false } }
+      - { label: "lift-call", object_type: analog_input, profile: { kind: random_walk, base: 5.0, step: 2.0, min: 0.0, max: 20.0 } }
 
   water_tank:
     description: "Water Tank"
@@ -82,7 +103,7 @@ templates:
   odour:
     description: "Odour Sensor - H2S"
     points:
-      - { label: "h2s-concentration", object_type: analog_input, units: parts_per_billion, profile: { kind: random_walk, base: 5.0, step: 0.5, min: 0.0, max: 50.0 } }
+      - { label: "h2s", object_type: analog_input, units: parts_per_million, profile: { kind: random_walk, base: 0.05, step: 0.01, min: 0.0, max: 0.4 } }
       - { label: "odour-alarm", object_type: binary_input, profile: { kind: binary_schedule, on_when_occupancy_gt: 2.0 } }
 
   noise:
@@ -93,16 +114,21 @@ templates:
   water_quality:
     description: "Water Quality Sensor"
     points:
-      - { label: "water-ph", object_type: analog_input, profile: { kind: random_walk, base: 7.2, step: 0.02, min: 6.5, max: 8.5 } }
-      - { label: "water-temp", object_type: analog_input, units: degrees_celsius, profile: { kind: temp_control, setpoint: 26.0, gain: 0.02, noise: 0.1, initial: 26.0 } }
-      - { label: "water-chlorine", object_type: analog_input, units: parts_per_million, profile: { kind: random_walk, base: 1.5, step: 0.05, min: 0.5, max: 3.0 } }
+      - { label: "ph", object_type: analog_input, profile: { kind: random_walk, base: 7.6, step: 0.02, min: 6.8, max: 8.4 } }
+      - { label: "ph-temperature", object_type: analog_input, units: degrees_celsius, profile: { kind: sine, base: 26.0, amplitude: 3.0, period_secs: 86400.0 } }
+      - { label: "distance", object_type: analog_input, units: millimeters, profile: { kind: random_walk, base: 600.0, step: 5.0, min: 300.0, max: 900.0 } }
+      - { label: "flood", object_type: binary_input, profile: { kind: constant_bool, value: false } }
+      - { label: "battery", object_type: analog_input, units: percent, profile: { kind: random_walk, base: 88.0, step: 0.05, min: 60.0, max: 100.0 } }
 
   iaq:
     description: "IAQ Sensor"
     points:
-      - { label: "iaq-co2", object_type: analog_input, units: parts_per_million, profile: { kind: occupancy_linked, base: 450.0, peak_delta: 500.0, noise: 25.0 } }
-      - { label: "iaq-temp", object_type: analog_input, units: degrees_celsius, profile: { kind: temp_control, setpoint: 23.0, gain: 0.05, noise: 0.2, initial: 23.0 } }
-      - { label: "iaq-rh", object_type: analog_input, units: percent_relative_humidity, profile: { kind: random_walk, base: 48.0, step: 0.4, min: 35.0, max: 60.0 } }
+      - { label: "co2", object_type: analog_input, units: parts_per_million, profile: { kind: occupancy_linked, base: 450.0, peak_delta: 480.0, noise: 25.0 } }
+      - { label: "temp", object_type: analog_input, units: degrees_celsius, profile: { kind: temp_control, setpoint: 23.5, gain: 0.05, outside_influence: 0.1, noise: 0.2, initial: 23.5 } }
+      - { label: "rh", object_type: analog_input, units: percent_relative_humidity, profile: { kind: random_walk, base: 50.0, step: 0.5, min: 35.0, max: 65.0 } }
+      - { label: "pm25", object_type: analog_input, units: micrograms_per_cubic_meter, profile: { kind: occupancy_linked, base: 8.0, peak_delta: 22.0, noise: 3.0 } }
+      - { label: "pm10", object_type: analog_input, units: micrograms_per_cubic_meter, profile: { kind: occupancy_linked, base: 15.0, peak_delta: 35.0, noise: 5.0 } }
+      - { label: "tvoc", object_type: analog_input, units: parts_per_billion, profile: { kind: occupancy_linked, base: 120.0, peak_delta: 280.0, noise: 20.0 } }
 
   cbs:
     description: "CBS"
@@ -115,84 +141,121 @@ templates:
     points:
       - { label: "lpg-concentration", object_type: analog_input, units: parts_per_million, profile: { kind: random_walk, base: 20.0, step: 1.0, min: 0.0, max: 100.0 } }
       - { label: "lpg-alarm", object_type: binary_input, profile: { kind: binary_schedule, on_when_occupancy_gt: 2.0 } }
+      - { label: "lpg-leak-detection", object_type: binary_input, profile: { kind: constant_bool, value: false } }
 
   package_unit:
     description: "Package Unit"
     points:
       - { label: "fan-run-status", object_type: binary_input, profile: { kind: binary_schedule, on_when_occupancy_gt: 0.05 } }
       - { label: "fan-speed", object_type: analog_input, units: percent, profile: { kind: occupancy_linked, base: 20.0, peak_delta: 60.0, noise: 4.0 } }
+      - { label: "fan-trip-status", object_type: binary_input, profile: { kind: constant_bool, value: false } }
+      - { label: "fan-hoa-status", object_type: binary_input, profile: { kind: constant_bool, value: true } }
 
   jet_fan:
     description: "Jet Fan"
     points:
       - { label: "fan-run-status", object_type: binary_input, profile: { kind: binary_schedule, on_when_occupancy_gt: 0.05 } }
       - { label: "fan-speed", object_type: analog_input, units: percent, profile: { kind: occupancy_linked, base: 20.0, peak_delta: 60.0, noise: 4.0 } }
+      - { label: "fan-trip-status", object_type: binary_input, profile: { kind: constant_bool, value: false } }
+      - { label: "fan-hoa-status", object_type: binary_input, profile: { kind: constant_bool, value: true } }
 
   exhaust_fan:
     description: "Exhaust Fan"
     points:
       - { label: "fan-run-status", object_type: binary_input, profile: { kind: binary_schedule, on_when_occupancy_gt: 0.05 } }
       - { label: "fan-speed", object_type: analog_input, units: percent, profile: { kind: occupancy_linked, base: 20.0, peak_delta: 60.0, noise: 4.0 } }
+      - { label: "fan-trip-status", object_type: binary_input, profile: { kind: constant_bool, value: false } }
+      - { label: "fan-hoa-status", object_type: binary_input, profile: { kind: constant_bool, value: true } }
 
   staircase_fan:
     description: "Staircase Pressurisation Fan"
     points:
       - { label: "fan-run-status", object_type: binary_input, profile: { kind: binary_schedule, on_when_occupancy_gt: 2.0 } }
       - { label: "fan-speed", object_type: analog_input, units: percent, profile: { kind: constant, value: 0.0 } }
+      - { label: "fan-trip-status", object_type: binary_input, profile: { kind: constant_bool, value: false } }
+      - { label: "fan-hoa-status", object_type: binary_input, profile: { kind: constant_bool, value: true } }
 
   cpef:
     description: "CPEF"
     points:
       - { label: "fan-run-status", object_type: binary_input, profile: { kind: binary_schedule, on_when_occupancy_gt: 0.05 } }
       - { label: "fan-speed", object_type: analog_input, units: percent, profile: { kind: occupancy_linked, base: 20.0, peak_delta: 60.0, noise: 4.0 } }
+      - { label: "fan-trip-status", object_type: binary_input, profile: { kind: constant_bool, value: false } }
+      - { label: "fan-hoa-status", object_type: binary_input, profile: { kind: constant_bool, value: true } }
 
   kef:
     description: "KEF"
     points:
       - { label: "fan-run-status", object_type: binary_input, profile: { kind: binary_schedule, on_when_occupancy_gt: 0.05 } }
       - { label: "fan-speed", object_type: analog_input, units: percent, profile: { kind: occupancy_linked, base: 20.0, peak_delta: 60.0, noise: 4.0 } }
+      - { label: "fan-trip-status", object_type: binary_input, profile: { kind: constant_bool, value: false } }
+      - { label: "fan-hoa-status", object_type: binary_input, profile: { kind: constant_bool, value: true } }
 
   lift_fan:
     description: "Lift Pressurisation Fan"
     points:
       - { label: "fan-run-status", object_type: binary_input, profile: { kind: binary_schedule, on_when_occupancy_gt: 2.0 } }
       - { label: "fan-speed", object_type: analog_input, units: percent, profile: { kind: constant, value: 0.0 } }
+      - { label: "fan-trip-status", object_type: binary_input, profile: { kind: constant_bool, value: false } }
+      - { label: "fan-hoa-status", object_type: binary_input, profile: { kind: constant_bool, value: true } }
 
   makeup_air_fan:
     description: "Makeup Air Fan"
     points:
       - { label: "fan-run-status", object_type: binary_input, profile: { kind: binary_schedule, on_when_occupancy_gt: 0.05 } }
       - { label: "fan-speed", object_type: analog_input, units: percent, profile: { kind: occupancy_linked, base: 20.0, peak_delta: 60.0, noise: 4.0 } }
+      - { label: "fan-trip-status", object_type: binary_input, profile: { kind: constant_bool, value: false } }
+      - { label: "fan-hoa-status", object_type: binary_input, profile: { kind: constant_bool, value: true } }
 
   refuse_exhaust_fan:
     description: "Refuse Room Exhaust Fan"
     points:
       - { label: "fan-run-status", object_type: binary_input, profile: { kind: binary_schedule, on_when_occupancy_gt: 0.05 } }
       - { label: "fan-speed", object_type: analog_input, units: percent, profile: { kind: occupancy_linked, base: 20.0, peak_delta: 60.0, noise: 4.0 } }
+      - { label: "fan-trip-status", object_type: binary_input, profile: { kind: constant_bool, value: false } }
+      - { label: "fan-hoa-status", object_type: binary_input, profile: { kind: constant_bool, value: true } }
 
   sef:
     description: "SEF"
     points:
       - { label: "fan-run-status", object_type: binary_input, profile: { kind: binary_schedule, on_when_occupancy_gt: 2.0 } }
       - { label: "fan-speed", object_type: analog_input, units: percent, profile: { kind: constant, value: 0.0 } }
+      - { label: "fan-trip-status", object_type: binary_input, profile: { kind: constant_bool, value: false } }
+      - { label: "fan-hoa-status", object_type: binary_input, profile: { kind: constant_bool, value: true } }
 
   sump_pump:
     description: "Sump Pumps"
     points:
       - { label: "pump-run-status", object_type: binary_input, profile: { kind: binary_schedule, on_when_occupancy_gt: 0.05 } }
       - { label: "pump-speed", object_type: analog_input, units: percent, profile: { kind: random_walk, base: 60.0, step: 3.0, min: 0.0, max: 100.0 } }
+      - { label: "pump-trip-status", object_type: binary_input, profile: { kind: constant_bool, value: false } }
+      - { label: "pump-system-enable", object_type: binary_input, profile: { kind: constant_bool, value: true } }
+      - { label: "pump-system-reset", object_type: binary_input, profile: { kind: constant_bool, value: false } }
+      - { label: "pump-index", object_type: analog_input, profile: { kind: random_walk, base: 1.0, step: 0.2, min: 0.0, max: 3.0 } }
 
   fire_pump:
-    description: "Fire Pumps"
+    description: "Electric Pumps"
     points:
       - { label: "pump-run-status", object_type: binary_input, profile: { kind: binary_schedule, on_when_occupancy_gt: 2.0 } }
       - { label: "pump-speed", object_type: analog_input, units: percent, profile: { kind: constant, value: 0.0 } }
+      - { label: "pump-trip-status", object_type: binary_input, profile: { kind: constant_bool, value: false } }
+      - { label: "pump-system-enable", object_type: binary_input, profile: { kind: constant_bool, value: true } }
+      - { label: "pump-system-reset", object_type: binary_input, profile: { kind: constant_bool, value: false } }
+      - { label: "pump-index", object_type: analog_input, profile: { kind: random_walk, base: 1.0, step: 0.2, min: 0.0, max: 3.0 } }
 
   hex:
-    description: "Hex"
+    description: "Plate-type Heat Exchanger"
     points:
       - { label: "hex-supply-temp", object_type: analog_input, units: degrees_celsius, profile: { kind: temp_control, setpoint: 45.0, gain: 0.03, noise: 0.2, initial: 45.0 } }
       - { label: "hex-return-temp", object_type: analog_input, units: degrees_celsius, profile: { kind: temp_control, setpoint: 38.0, gain: 0.03, noise: 0.2, initial: 38.0 } }
+      - { label: "hex-system-enable", object_type: binary_input, profile: { kind: constant_bool, value: true } }
+      - { label: "hex-system-reset", object_type: binary_input, profile: { kind: constant_bool, value: false } }
+      - { label: "index-differential-pressure", object_type: analog_input, units: kilopascals, profile: { kind: random_walk, base: 45.0, step: 1.0, min: 30.0, max: 60.0 } }
+      - { label: "index-differential-pressure-setpoint", object_type: analog_input, units: kilopascals, profile: { kind: constant, value: 45.0 } }
+      - { label: "secondary-side-header-inlet-temperature", object_type: analog_input, units: degrees_celsius, profile: { kind: temp_control, setpoint: 12.0, gain: 0.05, noise: 0.2, initial: 12.0 } }
+      - { label: "secondary-side-header-outlet-temperature", object_type: analog_input, units: degrees_celsius, profile: { kind: temp_control, setpoint: 17.0, gain: 0.05, noise: 0.2, initial: 17.0 } }
+      - { label: "secondary-side-outlet-temperature", object_type: analog_input, units: degrees_celsius, profile: { kind: temp_control, setpoint: 16.5, gain: 0.05, noise: 0.2, initial: 16.5 } }
+      - { label: "valve-command", object_type: analog_output, units: percent, profile: { kind: occupancy_linked, base: 15.0, peak_delta: 65.0, noise: 5.0 } }
 
   pump_room:
     description: "Pump Room"
@@ -211,6 +274,15 @@ templates:
     description: "Water Consumption Meter"
     points:
       - { label: "consumption-volume", object_type: analog_input, units: cubic_meters, profile: { kind: ramp, start: 0.0, end: 500.0, period_secs: 86400.0 } }
+
+  booster_pump:
+    description: "Water Supply Booster Pump"
+    points:
+      - { label: "pump-run-status", object_type: binary_input, profile: { kind: binary_schedule, on_when_occupancy_gt: 0.05 } }
+      - { label: "pump-trip-status", object_type: binary_input, profile: { kind: constant_bool, value: false } }
+      - { label: "pump-system-enable", object_type: binary_input, profile: { kind: constant_bool, value: true } }
+      - { label: "pump-index", object_type: analog_input, profile: { kind: random_walk, base: 1.0, step: 0.2, min: 0.0, max: 3.0 } }
+      - { label: "vfd-speed-feedback", object_type: analog_input, units: percent, profile: { kind: occupancy_linked, base: 35.0, peak_delta: 45.0, noise: 4.0 } }
 
 instances:
   - { template: ahu, name_prefix: "ahu-12", count: 1, zone: "demo-bldg-tower-a" }
@@ -247,6 +319,7 @@ instances:
   - { template: lift, name_prefix: "lift-03", count: 1, zone: "demo-bldg-terminal-1" }
   - { template: water_tank, name_prefix: "tank-01", count: 1, zone: "demo-bldg-tower-a" }
   - { template: water_tank, name_prefix: "tank-02", count: 1, zone: "demo-bldg-terminal-2" }
+  - { template: water_tank, name_prefix: "tank-03", count: 1, zone: "demo-bldg-terminal-1" }
   - { template: odour, name_prefix: "odour-01", count: 1, zone: "demo-bldg-atrium" }
   - { template: odour, name_prefix: "odour-02", count: 1, zone: "demo-bldg-terminal-1" }
   - { template: odour, name_prefix: "odour-03", count: 1, zone: "demo-bldg-library" }
@@ -264,35 +337,50 @@ instances:
   - { template: iaq, name_prefix: "iaq-03", count: 1, zone: "demo-bldg-atrium" }
   - { template: iaq, name_prefix: "iaq-04", count: 1, zone: "demo-bldg-library" }
   - { template: cbs, name_prefix: "cbs-01", count: 1, zone: "demo-bldg-tower-a" }
+  - { template: cbs, name_prefix: "cbs-02", count: 1, zone: "demo-bldg-tower-b" }
+  - { template: cbs, name_prefix: "cbs-03", count: 1, zone: "demo-bldg-terminal-1" }
   - { template: lpg, name_prefix: "lpg-01", count: 1, zone: "demo-bldg-tower-a" }
   - { template: lpg, name_prefix: "lpg-02", count: 1, zone: "demo-bldg-terminal-1" }
   - { template: lpg, name_prefix: "lpg-03", count: 1, zone: "demo-bldg-library" }
   - { template: package_unit, name_prefix: "pau-01", count: 1, zone: "demo-bldg-tower-a" }
   - { template: package_unit, name_prefix: "pau-02", count: 1, zone: "demo-bldg-terminal-1" }
+  - { template: package_unit, name_prefix: "pau-03", count: 1, zone: "demo-bldg-library" }
   - { template: jet_fan, name_prefix: "jetfan-01", count: 1, zone: "demo-bldg-tower-a" }
   - { template: jet_fan, name_prefix: "jetfan-02", count: 1, zone: "demo-bldg-tower-b" }
+  - { template: jet_fan, name_prefix: "jetfan-03", count: 1, zone: "demo-bldg-terminal-2" }
   - { template: exhaust_fan, name_prefix: "exhaustfan-01", count: 1, zone: "demo-bldg-tower-a" }
   - { template: exhaust_fan, name_prefix: "exhaustfan-02", count: 1, zone: "demo-bldg-atrium" }
+  - { template: exhaust_fan, name_prefix: "exhaustfan-03", count: 1, zone: "demo-bldg-science-block" }
   - { template: staircase_fan, name_prefix: "staircasefan-01", count: 1, zone: "demo-bldg-tower-a" }
   - { template: staircase_fan, name_prefix: "staircasefan-02", count: 1, zone: "demo-bldg-tower-b" }
+  - { template: staircase_fan, name_prefix: "staircasefan-03", count: 1, zone: "demo-bldg-terminal-1" }
   - { template: cpef, name_prefix: "cpef-01", count: 1, zone: "demo-bldg-tower-a" }
   - { template: cpef, name_prefix: "cpef-02", count: 1, zone: "demo-bldg-terminal-1" }
+  - { template: cpef, name_prefix: "cpef-03", count: 1, zone: "demo-bldg-tower-b" }
   - { template: kef, name_prefix: "kef-01", count: 1, zone: "demo-bldg-atrium" }
   - { template: kef, name_prefix: "kef-02", count: 1, zone: "demo-bldg-library" }
+  - { template: kef, name_prefix: "kef-03", count: 1, zone: "demo-bldg-library" }
   - { template: lift_fan, name_prefix: "liftfan-01", count: 1, zone: "demo-bldg-tower-a" }
   - { template: lift_fan, name_prefix: "liftfan-02", count: 1, zone: "demo-bldg-terminal-2" }
+  - { template: lift_fan, name_prefix: "liftfan-03", count: 1, zone: "demo-bldg-tower-a" }
   - { template: makeup_air_fan, name_prefix: "mauf-01", count: 1, zone: "demo-bldg-atrium" }
   - { template: makeup_air_fan, name_prefix: "mauf-02", count: 1, zone: "demo-bldg-terminal-1" }
+  - { template: makeup_air_fan, name_prefix: "mauf-03", count: 1, zone: "demo-bldg-atrium" }
   - { template: refuse_exhaust_fan, name_prefix: "refusefan-01", count: 1, zone: "demo-bldg-tower-a" }
   - { template: refuse_exhaust_fan, name_prefix: "refusefan-02", count: 1, zone: "demo-bldg-tower-b" }
+  - { template: refuse_exhaust_fan, name_prefix: "refusefan-03", count: 1, zone: "demo-bldg-tower-b" }
   - { template: sef, name_prefix: "sef-01", count: 1, zone: "demo-bldg-terminal-1" }
   - { template: sef, name_prefix: "sef-02", count: 1, zone: "demo-bldg-terminal-2" }
+  - { template: sef, name_prefix: "sef-03", count: 1, zone: "demo-bldg-terminal-2" }
   - { template: sump_pump, name_prefix: "sump-01", count: 1, zone: "demo-bldg-tower-a" }
   - { template: sump_pump, name_prefix: "sump-02", count: 1, zone: "demo-bldg-terminal-1" }
+  - { template: sump_pump, name_prefix: "sump-03", count: 1, zone: "demo-bldg-terminal-1" }
   - { template: fire_pump, name_prefix: "firepump-01", count: 1, zone: "demo-bldg-tower-a" }
   - { template: fire_pump, name_prefix: "firepump-02", count: 1, zone: "demo-bldg-terminal-1" }
+  - { template: fire_pump, name_prefix: "firepump-03", count: 1, zone: "demo-bldg-terminal-1" }
   - { template: hex, name_prefix: "hex-01", count: 1, zone: "demo-bldg-tower-a" }
   - { template: hex, name_prefix: "hex-02", count: 1, zone: "demo-bldg-atrium" }
+  - { template: hex, name_prefix: "hex-03", count: 1, zone: "demo-bldg-terminal-1" }
   - { template: pump_room, name_prefix: "pumproom-01", count: 1, zone: "demo-bldg-tower-a" }
   - { template: pump_room, name_prefix: "pumproom-02", count: 1, zone: "demo-bldg-terminal-1" }
   - { template: swimming_pool, name_prefix: "pool-01", count: 1, zone: "demo-bldg-atrium" }
@@ -308,6 +396,9 @@ instances:
   - { template: water_consumption, name_prefix: "wc-05", count: 1, zone: "demo-bldg-tower-b" }
   - { template: water_consumption, name_prefix: "wc-06", count: 1, zone: "demo-bldg-library" }
   - { template: water_consumption, name_prefix: "wc-07", count: 1, zone: "demo-bldg-library" }
+  - { template: booster_pump, name_prefix: "booster-01", count: 1, zone: "demo-bldg-tower-a" }
+  - { template: booster_pump, name_prefix: "booster-02", count: 1, zone: "demo-bldg-tower-b" }
+  - { template: booster_pump, name_prefix: "booster-03", count: 1, zone: "demo-bldg-terminal-1" }
 
 protocols:
   - { id: bacnet, port: 47808 }

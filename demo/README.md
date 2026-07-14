@@ -12,9 +12,9 @@ netix-simulator  --(BACnet)-->  netix-republisher  --(MQTT)-->  platform broker
    headless,                       netix_envelope,                /Netix/Sim/Device/#
    config.yaml                     config.toml
         |                               |
-        └─ 29 templates,                └─ one envelope per device:
-           95 devices,                     {"reason","time","id":"<tag_identifier>",
-           258 points                       "points":[{"pointName":"<role>","data",...}]}
+        └─ 30 templates,                └─ one envelope per device:
+           114 devices,                     {"reason","time","id":"<tag_identifier>",
+           591 points                       "points":[{"pointName":"<role>","data",...}]}
                                                      |
    stormbreaker simulated-data-9999 worker  <────────┘
      parser: tag_name = "<id>/<pointName>" = "<tag_identifier>/<role>"
@@ -36,7 +36,7 @@ frontend splits on) — the one the dashboards read.
 |------|------------|
 | `demo_spec.json` | Cross-service id contract (vendored, do not edit here). |
 | `gen_demo.py` | Generates `config.yaml` from `demo_spec.json`. |
-| `config.yaml` | Simulator model: 29 templates (one per asset class), 95 instances (one per equipment, `name_prefix` = `tag_identifier`), 258 BACnet points. |
+| `config.yaml` | Simulator model: 30 templates (one per asset class), 114 instances (one per equipment, `name_prefix` = `tag_identifier`), 591 BACnet points. |
 | `republisher-config.toml` | Republisher config emitted by the simulator (envelope mode, autostart, every point addressed). Broker host is a placeholder — set it per deployment. |
 
 Regenerate after any `demo_spec.json` change:
