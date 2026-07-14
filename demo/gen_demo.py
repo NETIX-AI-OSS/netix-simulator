@@ -144,6 +144,135 @@ ROLE_SIM: dict[str, tuple[str, str | None, dict]] = {
     # --- Water consumption -------------------------------------------------
     "consumption-volume": ("analog_input", "cubic_meters",
         {"kind": "ramp", "start": 0.0, "end": 500.0, "period_secs": 86400.0}),
+
+    # --- Systems-sections coverage (spec v3) --------------------------------
+    # AHU detailed-widget points (FAHU page matches these display names).
+    "outside-air-temperature": ("analog_input", "degrees_celsius",
+        {"kind": "sine", "base": 30.0, "amplitude": 6.0, "period_secs": 86400.0}),
+    "supply-air-temperature": ("analog_input", "degrees_celsius",
+        {"kind": "temp_control", "setpoint": 14.0, "gain": 0.08, "outside_influence": 0.1, "noise": 0.3, "initial": 14.0}),
+    "return-air-temperature": ("analog_input", "degrees_celsius",
+        {"kind": "temp_control", "setpoint": 23.0, "gain": 0.06, "noise": 0.2, "initial": 23.0}),
+    "pre-filter-status": ("binary_input", None,
+        {"kind": "constant_bool", "value": False}),
+    "bag-filter-status": ("binary_input", None,
+        {"kind": "constant_bool", "value": False}),
+    "supply-fan-trip-status": ("binary_input", None,
+        {"kind": "constant_bool", "value": False}),
+    "supply-fan-hoa-status": ("binary_input", None,
+        {"kind": "constant_bool", "value": True}),
+    "supply-air-damper-command": ("analog_output", "percent",
+        {"kind": "occupancy_linked", "base": 20.0, "peak_delta": 60.0, "noise": 4.0}),
+    "supply-air-damper-status": ("analog_input", "percent",
+        {"kind": "occupancy_linked", "base": 20.0, "peak_delta": 60.0, "noise": 4.0}),
+    "valve-command": ("analog_output", "percent",
+        {"kind": "occupancy_linked", "base": 15.0, "peak_delta": 65.0, "noise": 5.0}),
+    "supply-air-flow-status": ("binary_input", None,
+        {"kind": "binary_schedule", "on_when_occupancy_gt": 0.05}),
+    # PMU electrical points (Energy page charts/cards).
+    "energy": ("analog_input", "kilowatt_hours",
+        {"kind": "integrator", "rate_source": "active-power", "scale": 0.000277778}),
+    "frequency": ("analog_input", "hertz",
+        {"kind": "random_walk", "base": 50.0, "step": 0.02, "min": 49.7, "max": 50.3}),
+    "power-factor": ("analog_input", None,
+        {"kind": "random_walk", "base": 0.92, "step": 0.005, "min": 0.85, "max": 0.99}),
+    "phase-power": ("analog_input", "kilowatts",
+        {"kind": "occupancy_linked", "base": 13.0, "peak_delta": 85.0, "noise": 5.0}),
+    "voltage": ("analog_input", "volts",
+        {"kind": "random_walk", "base": 415.0, "step": 1.0, "min": 400.0, "max": 430.0}),
+    "current": ("analog_input", "amperes",
+        {"kind": "occupancy_linked", "base": 60.0, "peak_delta": 340.0, "noise": 20.0}),
+    # IAQ bare roles (IAQ page matches exact segment names).
+    "co2": ("analog_input", "parts_per_million",
+        {"kind": "occupancy_linked", "base": 450.0, "peak_delta": 480.0, "noise": 25.0}),
+    "temp": ("analog_input", "degrees_celsius",
+        {"kind": "temp_control", "setpoint": 23.5, "gain": 0.05, "outside_influence": 0.1, "noise": 0.2, "initial": 23.5}),
+    "rh": ("analog_input", "percent_relative_humidity",
+        {"kind": "random_walk", "base": 50.0, "step": 0.5, "min": 35.0, "max": 65.0}),
+    "pm25": ("analog_input", "micrograms_per_cubic_meter",
+        {"kind": "occupancy_linked", "base": 8.0, "peak_delta": 22.0, "noise": 3.0}),
+    "pm10": ("analog_input", "micrograms_per_cubic_meter",
+        {"kind": "occupancy_linked", "base": 15.0, "peak_delta": 35.0, "noise": 5.0}),
+    "tvoc": ("analog_input", "parts_per_billion",
+        {"kind": "occupancy_linked", "base": 120.0, "peak_delta": 280.0, "noise": 20.0}),
+    # Odour (H2S page matches exact 'h2s').
+    "h2s": ("analog_input", "parts_per_million",
+        {"kind": "random_walk", "base": 0.05, "step": 0.01, "min": 0.0, "max": 0.4}),
+    # Lake / water-quality signals (exact segment names on the lake page).
+    "ph": ("analog_input", None,
+        {"kind": "random_walk", "base": 7.6, "step": 0.02, "min": 6.8, "max": 8.4}),
+    "ph-temperature": ("analog_input", "degrees_celsius",
+        {"kind": "sine", "base": 26.0, "amplitude": 3.0, "period_secs": 86400.0}),
+    "distance": ("analog_input", "millimeters",
+        {"kind": "random_walk", "base": 600.0, "step": 5.0, "min": 300.0, "max": 900.0}),
+    "flood": ("binary_input", None,
+        {"kind": "constant_bool", "value": False}),
+    "battery": ("analog_input", "percent",
+        {"kind": "random_walk", "base": 88.0, "step": 0.05, "min": 60.0, "max": 100.0}),
+    # Lift detail charts (Power / Fault / Call substring matches).
+    "lift-power": ("binary_input", None,
+        {"kind": "constant_bool", "value": True}),
+    "lift-fault": ("binary_input", None,
+        {"kind": "constant_bool", "value": False}),
+    "lift-call": ("analog_input", None,
+        {"kind": "random_walk", "base": 5.0, "step": 2.0, "min": 0.0, "max": 20.0}),
+    # LPG leak-detection chart.
+    "lpg-leak-detection": ("binary_input", None,
+        {"kind": "constant_bool", "value": False}),
+    # Fan-family status points (HVAC subsections).
+    "fan-trip-status": ("binary_input", None,
+        {"kind": "constant_bool", "value": False}),
+    "fan-hoa-status": ("binary_input", None,
+        {"kind": "constant_bool", "value": True}),
+    # Pump-family cards (Sump / Fire / Booster pumps pages).
+    "pump-trip-status": ("binary_input", None,
+        {"kind": "constant_bool", "value": False}),
+    "pump-system-enable": ("binary_input", None,
+        {"kind": "constant_bool", "value": True}),
+    "pump-system-reset": ("binary_input", None,
+        {"kind": "constant_bool", "value": False}),
+    "pump-index": ("analog_input", None,
+        {"kind": "random_walk", "base": 1.0, "step": 0.2, "min": 0.0, "max": 3.0}),
+    "vfd-speed-command": ("analog_input", "percent",
+        {"kind": "occupancy_linked", "base": 35.0, "peak_delta": 45.0, "noise": 1.0}),
+    "vfd-speed-feedback": ("analog_input", "percent",
+        {"kind": "occupancy_linked", "base": 35.0, "peak_delta": 45.0, "noise": 4.0}),
+    # Booster pumps carry booster-prefixed roles so their point segments stay
+    # unique within a pump-room card view (sump pumps own the pump-* roles) —
+    # the 2D room schematic binds pens by segment and needs no collisions.
+    "booster-run-status": ("binary_input", None,
+        {"kind": "binary_schedule", "on_when_occupancy_gt": 0.05}),
+    "booster-trip-status": ("binary_input", None,
+        {"kind": "constant_bool", "value": False}),
+    "booster-system-enable": ("binary_input", None,
+        {"kind": "constant_bool", "value": True}),
+    "booster-index": ("analog_input", None,
+        {"kind": "random_walk", "base": 1.0, "step": 0.2, "min": 0.0, "max": 3.0}),
+    # Heat-exchanger detailed widgets (exact display-name matches).
+    "hex-system-enable": ("binary_input", None,
+        {"kind": "constant_bool", "value": True}),
+    "hex-system-reset": ("binary_input", None,
+        {"kind": "constant_bool", "value": False}),
+    "index-differential-pressure": ("analog_input", "kilopascals",
+        {"kind": "random_walk", "base": 45.0, "step": 1.0, "min": 30.0, "max": 60.0}),
+    "index-differential-pressure-setpoint": ("analog_input", "kilopascals",
+        {"kind": "constant", "value": 45.0}),
+    "secondary-side-header-inlet-temperature": ("analog_input", "degrees_celsius",
+        {"kind": "temp_control", "setpoint": 12.0, "gain": 0.05, "noise": 0.2, "initial": 12.0}),
+    "secondary-side-header-outlet-temperature": ("analog_input", "degrees_celsius",
+        {"kind": "temp_control", "setpoint": 17.0, "gain": 0.05, "noise": 0.2, "initial": 17.0}),
+    "secondary-side-outlet-temperature": ("analog_input", "degrees_celsius",
+        {"kind": "temp_control", "setpoint": 16.5, "gain": 0.05, "noise": 0.2, "initial": 16.5}),
+    # Heat-recovery wheel run status (FAHU detail HRW widget; numeric binary —
+    # the value shape that motivated viz-ui's normalizeBinaryStatus fix).
+    "hrw-run-status": ("binary_input", None,
+        {"kind": "binary_schedule", "on_when_occupancy_gt": 0.05}),
+    # Manhole sensors (/utilities/manhole class-driven view): covers stay
+    # closed; the water level drifts within the pit.
+    "cover-status": ("binary_input", None,
+        {"kind": "constant_bool", "value": False}),
+    "water-level": ("analog_input", "millimeters",
+        {"kind": "random_walk", "base": 250.0, "step": 4.0, "min": 50.0, "max": 600.0}),
 }
 
 # Life-safety / standby equipment sits idle unless called. Override the shared
@@ -158,7 +287,13 @@ STANDBY_OVERRIDES = {
 
 # Templates whose point order must differ from haystack_point_roles order (an
 # integrator's rate_source point must be declared first).
-POINT_ORDER = {"meter": ["active-power", "energy-accumulator"]}
+POINT_ORDER = {
+    "meter": [
+        # active-power first: both accumulators integrate it.
+        "active-power", "energy-accumulator", "energy",
+        "frequency", "power-factor", "phase-power", "voltage", "current",
+    ]
+}
 
 # The weather station is not in a demo_spec list (it is a single fixed asset in
 # the tag-service seed). Its tag_identifier is defined there.
