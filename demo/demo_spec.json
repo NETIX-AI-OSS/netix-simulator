@@ -1,6 +1,6 @@
 {
-  "version": 4,
-  "description": "NETIX demo tenant (org 9999) cross-service contract. v4: adds manhole sensors (class-driven /utilities/manhole) and booster-pump VFD speed command; v3: Systems-sections coverage \u2014 >=3 devices per viz Systems page, UI-matching point roles, base-unit hierarchy for displayParent sections, booster-pump family.",
+  "version": 5,
+  "description": "NETIX demo tenant (org 9999) cross-service contract. v5: fixes pump-room equipment building consistency; v4: adds manhole sensors (class-driven /utilities/manhole) and booster-pump VFD speed command; v3: Systems-sections coverage \u2014 >=3 devices per viz Systems page, UI-matching point roles, base-unit hierarchy for displayParent sections, booster-pump family.",
   "organization": {
     "id": 9999,
     "name": "Demo"
@@ -681,7 +681,7 @@
       "name": "demo-sump-02",
       "display_name": "Sump Pump B2 Terminal-1",
       "tag_identifier": "sump-02",
-      "building": "demo-bldg-terminal-1",
+      "building": "demo-bldg-tower-b",
       "base_unit": "demo-bu-pumproom-b"
     },
     {
@@ -699,7 +699,7 @@
       "name": "demo-firepump-02",
       "display_name": "Fire Pump Set Terminal-1",
       "tag_identifier": "firepump-02",
-      "building": "demo-bldg-terminal-1",
+      "building": "demo-bldg-tower-b",
       "base_unit": "demo-bu-pumproom-b"
     },
     {
@@ -717,7 +717,7 @@
       "name": "demo-hex-02",
       "display_name": "Plate Heat Exchanger Atrium",
       "tag_identifier": "hex-02",
-      "building": "demo-bldg-atrium",
+      "building": "demo-bldg-tower-b",
       "base_unit": "demo-bu-pumproom-b"
     },
     {

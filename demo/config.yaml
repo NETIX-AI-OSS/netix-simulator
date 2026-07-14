@@ -381,13 +381,13 @@ instances:
   - { template: sef, name_prefix: "sef-02", count: 1, zone: "demo-bldg-terminal-2" }
   - { template: sef, name_prefix: "sef-03", count: 1, zone: "demo-bldg-terminal-2" }
   - { template: sump_pump, name_prefix: "sump-01", count: 1, zone: "demo-bldg-tower-a" }
-  - { template: sump_pump, name_prefix: "sump-02", count: 1, zone: "demo-bldg-terminal-1" }
+  - { template: sump_pump, name_prefix: "sump-02", count: 1, zone: "demo-bldg-tower-b" }
   - { template: sump_pump, name_prefix: "sump-03", count: 1, zone: "demo-bldg-terminal-1" }
   - { template: fire_pump, name_prefix: "firepump-01", count: 1, zone: "demo-bldg-tower-a" }
-  - { template: fire_pump, name_prefix: "firepump-02", count: 1, zone: "demo-bldg-terminal-1" }
+  - { template: fire_pump, name_prefix: "firepump-02", count: 1, zone: "demo-bldg-tower-b" }
   - { template: fire_pump, name_prefix: "firepump-03", count: 1, zone: "demo-bldg-terminal-1" }
   - { template: hex, name_prefix: "hex-01", count: 1, zone: "demo-bldg-tower-a" }
-  - { template: hex, name_prefix: "hex-02", count: 1, zone: "demo-bldg-atrium" }
+  - { template: hex, name_prefix: "hex-02", count: 1, zone: "demo-bldg-tower-b" }
   - { template: hex, name_prefix: "hex-03", count: 1, zone: "demo-bldg-terminal-1" }
   - { template: pump_room, name_prefix: "pumproom-01", count: 1, zone: "demo-bldg-tower-a" }
   - { template: pump_room, name_prefix: "pumproom-02", count: 1, zone: "demo-bldg-terminal-1" }
