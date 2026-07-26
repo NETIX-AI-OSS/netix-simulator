@@ -166,7 +166,7 @@ jobs:
     name: Publish GitHub release
     needs: [build-unix, windows]
     runs-on: ubuntu-24.04
-    timeout-minutes: 15
+    timeout-minutes: 30
     permissions:
       actions: read
       attestations: write
