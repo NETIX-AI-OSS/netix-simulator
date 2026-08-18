@@ -41,9 +41,7 @@ fn main() {
     let args = parse_args();
     let config_path = args.config_path.clone();
 
-    // `--emit-republisher-config PATH`: load the config, write a matching
-    // republisher config.toml, and exit without serving. The broker host comes
-    // from REPUBLISHER_MQTT_HOST (a clearly-flagged placeholder otherwise).
+    // --emit-republisher-config: write republisher config.toml, then exit.
     if let Some(out_path) = args.emit_republisher_config.as_ref() {
         let config = match bootstrap_config(&config_path) {
             Ok(config) => config,
