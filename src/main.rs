@@ -1,9 +1,4 @@
-//! Generic industrial-protocol device simulator.
-//!
-//! One binary serves the same config-driven simulation over any registered
-//! protocol (selected via the config `protocols` section). Protocol adapters are
-//! compiled in here and registered with the [`SimRegistry`]; adding a protocol is
-//! a one-line `register_*` call.
+//! Generic industrial-protocol device simulator; adapters are compiled in and registered with [`SimRegistry`].
 
 use sim_core::{
     bootstrap_config, build_simulation, detect_run_mode, emit_republisher_config, parse_args, run,
