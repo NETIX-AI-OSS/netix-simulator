@@ -93,6 +93,7 @@ jobs:
         with:
           name: netix-simulator-${{ matrix.artifact_name }}
           path: dist/*.zip
+          retention-days: 3
           if-no-files-found: error
 
   windows:
@@ -160,6 +161,7 @@ jobs:
         with:
           name: netix-simulator-windows-x86_64
           path: dist/*.zip
+          retention-days: 3
           if-no-files-found: error
 
   publish:
