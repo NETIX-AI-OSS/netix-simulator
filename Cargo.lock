@@ -171,7 +171,7 @@ dependencies = [
  "gethostname",
  "hmac",
  "num-bigint-dig",
- "rand",
+ "rand 0.8.6",
  "rsa",
  "serde",
  "sha1",
@@ -267,6 +267,26 @@ dependencies = [
 ]
 
 [[package]]
+name = "async-tungstenite"
+version = "0.34.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "8447f02eaa65412035e2d3eeaa3fc82bbb8d7137c84c5976b4af685136012ee9"
+dependencies = [
+ "atomic-waker",
+ "futures-core",
+ "futures-io",
+ "futures-task",
+ "futures-util",
+ "log",
+ "pin-project-lite",
+ "rustls-native-certs",
+ "rustls-pki-types",
+ "tokio",
+ "tokio-rustls",
+ "tungstenite",
+]
+
+[[package]]
 name = "atomic-polyfill"
 version = "1.0.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -274,6 +294,12 @@ checksum = "8cf2bce30dfe09ef0bfaef228b9d414faaf7e563035494d7fe092dba54b300f4"
 dependencies = [
  "critical-section",
 ]
+
+[[package]]
+name = "atomic-waker"
+version = "1.1.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "1505bd5d3d116872e7271a6d4e16d81d0c8570876c8de68093a09ac269d8aac0"
 
 [[package]]
 name = "autocfg"
@@ -683,6 +709,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "data-encoding"
+version = "2.11.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "4583a4551df46e2792f82ceeac45e850d2e2d5debba0b91f102385cda5b11f06"
+
+[[package]]
 name = "der"
 version = "0.7.10"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -870,9 +902,9 @@ checksum = "b7ac824320a75a52197e8f2d787f6a38b6718bb6897a35142d749af3c0e8f4fe"
 
 [[package]]
 name = "flume"
-version = "0.11.1"
+version = "0.12.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "da0e4dd2a88388a1f4ccc7c9ce104604dab68d9f408dc34cd45823d5a9069095"
+checksum = "5e139bc46ca777eb5efaf62df0ab8cc5fd400866427e56c68b22e414e53bd3be"
 dependencies = [
  "futures-core",
  "futures-sink",
@@ -1055,13 +1087,25 @@ dependencies = [
 
 [[package]]
 name = "getrandom"
+version = "0.3.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "899def5c37c4fd7b2664648c28120ecec138e4d395b459e5ca34f9cce2dd77fd"
+dependencies = [
+ "cfg-if",
+ "libc",
+ "r-efi 5.3.0",
+ "wasip2",
+]
+
+[[package]]
+name = "getrandom"
 version = "0.4.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "0de51e6874e94e7bf76d726fc5d13ba782deca734ff60d5bb2fb2607c7406555"
 dependencies = [
  "cfg-if",
  "libc",
- "r-efi",
+ "r-efi 6.0.0",
  "wasip2",
  "wasip3",
 ]
@@ -1131,6 +1175,22 @@ checksum = "6c49c37c09c17a53d937dfbb742eb3a961d65a994e6bcdcf37e7399d0cc8ab5e"
 dependencies = [
  "digest",
 ]
+
+[[package]]
+name = "http"
+version = "1.5.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "918d3568bebf352712bc2ef3d46a8bcf1a75b373be6539de198e9105cbbf9ce0"
+dependencies = [
+ "bytes",
+ "itoa",
+]
+
+[[package]]
+name = "httparse"
+version = "1.10.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "6dbf3de79e51f3d586ab4cb9d5c3e2c14aa28ed23d180cf89b4df0454a69cc87"
 
 [[package]]
 name = "iana-time-zone"
@@ -1514,6 +1574,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "mqttbytes-core-next"
+version = "0.34.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "366b6ba2b4209ca4bc5ac731ccddf570d09831981eed07e5fbd63564cf0cf1aa"
+dependencies = [
+ "bytes",
+ "thiserror 2.0.18",
+]
+
+[[package]]
 name = "num-bigint-dig"
 version = "0.8.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1524,7 +1594,7 @@ dependencies = [
  "num-integer",
  "num-iter",
  "num-traits",
- "rand",
+ "rand 0.8.6",
  "serde",
  "smallvec",
  "zeroize",
@@ -1809,7 +1879,7 @@ dependencies = [
 [[package]]
 name = "proto-api"
 version = "0.1.0"
-source = "git+https://github.com/NETIX-AI-OSS/netix-protocol-core?rev=ca9bc0402d0b91723fad831566d59cb45c4c8d61#ca9bc0402d0b91723fad831566d59cb45c4c8d61"
+source = "git+https://github.com/NETIX-AI-OSS/netix-protocol-core?rev=81a822c62b9c1a55309ae859ef2d2f9f44363075#81a822c62b9c1a55309ae859ef2d2f9f44363075"
 dependencies = [
  "serde",
  "serde_json",
@@ -1818,7 +1888,7 @@ dependencies = [
 [[package]]
 name = "proto-bacnet"
 version = "0.1.0"
-source = "git+https://github.com/NETIX-AI-OSS/netix-protocol-core?rev=ca9bc0402d0b91723fad831566d59cb45c4c8d61#ca9bc0402d0b91723fad831566d59cb45c4c8d61"
+source = "git+https://github.com/NETIX-AI-OSS/netix-protocol-core?rev=81a822c62b9c1a55309ae859ef2d2f9f44363075#81a822c62b9c1a55309ae859ef2d2f9f44363075"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -1835,7 +1905,7 @@ dependencies = [
 [[package]]
 name = "proto-modbus"
 version = "0.1.0"
-source = "git+https://github.com/NETIX-AI-OSS/netix-protocol-core?rev=ca9bc0402d0b91723fad831566d59cb45c4c8d61#ca9bc0402d0b91723fad831566d59cb45c4c8d61"
+source = "git+https://github.com/NETIX-AI-OSS/netix-protocol-core?rev=81a822c62b9c1a55309ae859ef2d2f9f44363075#81a822c62b9c1a55309ae859ef2d2f9f44363075"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -1850,7 +1920,7 @@ dependencies = [
 [[package]]
 name = "proto-opcua"
 version = "0.1.0"
-source = "git+https://github.com/NETIX-AI-OSS/netix-protocol-core?rev=ca9bc0402d0b91723fad831566d59cb45c4c8d61#ca9bc0402d0b91723fad831566d59cb45c4c8d61"
+source = "git+https://github.com/NETIX-AI-OSS/netix-protocol-core?rev=81a822c62b9c1a55309ae859ef2d2f9f44363075#81a822c62b9c1a55309ae859ef2d2f9f44363075"
 dependencies = [
  "anyhow",
  "async-opcua",
@@ -1872,6 +1942,12 @@ dependencies = [
 
 [[package]]
 name = "r-efi"
+version = "5.3.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "69cdb34c158ceb288df11e18b4bd39de994f6657d83847bdffdbd7f346754b0f"
+
+[[package]]
+name = "r-efi"
 version = "6.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f8dcc9c7d52a811697d2151c701e0d08956f92b0e24136cf4cf27b57a6a0d9bf"
@@ -1883,8 +1959,18 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "5ca0ecfa931c29007047d1bc58e623ab12e5590e8c7cc53200d5202b69266d8a"
 dependencies = [
  "libc",
- "rand_chacha",
- "rand_core",
+ "rand_chacha 0.3.1",
+ "rand_core 0.6.4",
+]
+
+[[package]]
+name = "rand"
+version = "0.9.5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b9ef1d0d795eb7d84685bca4f72f3649f064e6641543d3a8c415898726a57b41"
+dependencies = [
+ "rand_chacha 0.9.0",
+ "rand_core 0.9.5",
 ]
 
 [[package]]
@@ -1894,7 +1980,17 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e6c10a63a0fa32252be49d21e7709d4d4baf8d231c2dbce1eaa8141b9b127d88"
 dependencies = [
  "ppv-lite86",
- "rand_core",
+ "rand_core 0.6.4",
+]
+
+[[package]]
+name = "rand_chacha"
+version = "0.9.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d3022b5f1df60f26e1ffddd6c66e8aa15de382ae63b3a0c1bfc0e4d3e3f325cb"
+dependencies = [
+ "ppv-lite86",
+ "rand_core 0.9.5",
 ]
 
 [[package]]
@@ -1904,6 +2000,15 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "ec0be4795e2f6a28069bec0b5ff3e2ac9bafc99e6a9a7dc3547996c5c816922c"
 dependencies = [
  "getrandom 0.2.17",
+]
+
+[[package]]
+name = "rand_core"
+version = "0.9.5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "76afc826de14238e6e8c374ddcc1fa19e374fd8dd986b0d2af0d02377261d83c"
+dependencies = [
+ "getrandom 0.3.4",
 ]
 
 [[package]]
@@ -2023,7 +2128,7 @@ checksum = "d6f6ff9a378485b298a5286656da665ba74413d36db0979633275d2e708145d4"
 [[package]]
 name = "republish-core"
 version = "0.1.0"
-source = "git+https://github.com/NETIX-AI-OSS/netix-protocol-core?rev=ca9bc0402d0b91723fad831566d59cb45c4c8d61#ca9bc0402d0b91723fad831566d59cb45c4c8d61"
+source = "git+https://github.com/NETIX-AI-OSS/netix-protocol-core?rev=81a822c62b9c1a55309ae859ef2d2f9f44363075#81a822c62b9c1a55309ae859ef2d2f9f44363075"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -2032,7 +2137,7 @@ dependencies = [
  "get_if_addrs",
  "log",
  "proto-api",
- "rumqttc",
+ "rumqttc-v4-next",
  "rustls-native-certs",
  "rustls-pemfile",
  "serde",
@@ -2070,7 +2175,7 @@ dependencies = [
  "num-traits",
  "pkcs1",
  "pkcs8",
- "rand_core",
+ "rand_core 0.6.4",
  "sha1",
  "sha2",
  "signature",
@@ -2080,22 +2185,40 @@ dependencies = [
 ]
 
 [[package]]
-name = "rumqttc"
-version = "0.25.1"
-source = "git+https://github.com/NETIX-AI-OSS/netix-protocol-core?rev=ca9bc0402d0b91723fad831566d59cb45c4c8d61#ca9bc0402d0b91723fad831566d59cb45c4c8d61"
+name = "rumqttc-core-next"
+version = "0.34.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "249896ab27ed630590971738264baa8f722f18965d2e387c706c40a3c2a572cc"
 dependencies = [
+ "async-tungstenite",
+ "rustls-native-certs",
+ "rustls-pki-types",
+ "rustls-webpki",
+ "thiserror 2.0.18",
+ "tokio",
+ "tokio-rustls",
+]
+
+[[package]]
+name = "rumqttc-v4-next"
+version = "0.34.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b3767dde22a804ea806107d0f4331e33cb794d1b8468b11c86fb0c1366f07054"
+dependencies = [
+ "async-tungstenite",
  "bytes",
  "fixedbitset",
  "flume",
  "futures-util",
  "log",
+ "mqttbytes-core-next",
+ "rumqttc-core-next",
  "rustls-native-certs",
- "rustls-pemfile",
+ "rustls-pki-types",
  "rustls-webpki",
  "thiserror 2.0.18",
  "tokio",
  "tokio-rustls",
- "tokio-stream",
  "tokio-util",
 ]
 
@@ -2141,7 +2264,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "48e13bd8c0e9365c43cfa5c9e8f9ad49d3c8444926c9aac819e0e4dc503c8fdf"
 dependencies = [
  "aws-lc-rs",
- "log",
  "once_cell",
  "rustls-pki-types",
  "rustls-webpki",
@@ -2378,13 +2500,13 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "77549399552de45a898a580c1b41d445bf730df867cc44e6c0233bbc4b8329de"
 dependencies = [
  "digest",
- "rand_core",
+ "rand_core 0.6.4",
 ]
 
 [[package]]
 name = "sim-core"
 version = "0.1.0"
-source = "git+https://github.com/NETIX-AI-OSS/netix-protocol-core?rev=ca9bc0402d0b91723fad831566d59cb45c4c8d61#ca9bc0402d0b91723fad831566d59cb45c4c8d61"
+source = "git+https://github.com/NETIX-AI-OSS/netix-protocol-core?rev=81a822c62b9c1a55309ae859ef2d2f9f44363075#81a822c62b9c1a55309ae859ef2d2f9f44363075"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -2392,7 +2514,7 @@ dependencies = [
  "crossterm",
  "log",
  "proto-api",
- "rand",
+ "rand 0.8.6",
  "ratatui",
  "republish-core",
  "serde",
@@ -2683,17 +2805,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "tokio-stream"
-version = "0.1.19"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a3d06f0b082ba57c26b79407372e57cf2a1e28124f78e9479fe80322cf53420b"
-dependencies = [
- "futures-core",
- "pin-project-lite",
- "tokio",
-]
-
-[[package]]
 name = "tokio-util"
 version = "0.7.18"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2809,6 +2920,24 @@ checksum = "97d095ae15e245a057c8e8451bab9b3ee1e1f68e9ba2b4fbc18d0ac5237835f2"
 dependencies = [
  "pin-project",
  "tracing",
+]
+
+[[package]]
+name = "tungstenite"
+version = "0.29.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "6c01152af293afb9c7c2a57e4b559c5620b421f6d133261c60dd2d0cdb38e6b8"
+dependencies = [
+ "bytes",
+ "data-encoding",
+ "http",
+ "httparse",
+ "log",
+ "rand 0.9.5",
+ "rustls",
+ "rustls-pki-types",
+ "sha1",
+ "thiserror 2.0.18",
 ]
 
 [[package]]
