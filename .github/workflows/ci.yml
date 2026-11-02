@@ -12,9 +12,12 @@ permissions:
   contents: read
 jobs:
   check:
-    runs-on: ubuntu-24.04
+    runs-on: [build-only, Linux, X64]
+    container: rust:1.96.0-bookworm
     timeout-minutes: 30
     steps:
+      - name: Install container build tools
+        run: apt-get update && apt-get install -y --no-install-recommends cmake perl pkg-config
       - uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5
       - uses: dtolnay/rust-toolchain@67ef31d5b988238dd797d409d6f9574278e20537 # stable
         with:
