@@ -59,13 +59,63 @@ jobs:
             target: aarch64-unknown-linux-gnu
             artifact_name: linux-aarch64
             bin: simulator
+    steps:
+      - name: Install container build tools
+        if: runner.os == 'Linux'
+        run: apt-get update && apt-get install -y --no-install-recommends cmake perl pkg-config
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+      - name: Install Rust toolchain
+        run: |
+          rustup toolchain install stable --profile minimal
+          rustup default stable
+          rustup target add ${{ matrix.target }}
+      - name: Install cross-compilation toolchain (Linux ARM64)
+        if: matrix.target == 'aarch64-unknown-linux-gnu'
+        run: |
+          apt-get update
+          apt-get install -y gcc-aarch64-linux-gnu zip
+      - name: Install packaging tools
+        if: matrix.target != 'aarch64-unknown-linux-gnu' && runner.os == 'Linux'
+        run: apt-get update && apt-get install -y zip
+      - name: Install packaging tools (macOS)
+        if: runner.os == 'macOS'
+        run: brew install zip
+      - name: Build release binary
+        run: cargo build --locked --release --target ${{ matrix.target }}
+        env:
+          CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_LINKER: aarch64-linux-gnu-gcc
+      - name: Package
+        shell: bash
+        run: |
+          set -euo pipefail
+          tag="${GITHUB_REF_NAME}"
+          package="netix-simulator-${tag}-${{ matrix.artifact_name }}"
+          mkdir -p "dist/${package}"
+          cp "target/${{ matrix.target }}/release/${{ matrix.bin }}" "dist/${package}/"
+          cp README.md "dist/${package}/" 2>/dev/null || true
+          (cd "dist/${package}" && zip -r "../${package}.zip" .)
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        with:
+          name: netix-simulator-${{ matrix.artifact_name }}
+          path: dist/*.zip
+          retention-days: 3
+          if-no-files-found: error
+
+
+  build-macos:
+    name: Build ${{ matrix.artifact_name }}
+    needs: test-gate
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
           - os: [build-only, macOS]
-            container: ""
             target: x86_64-apple-darwin
             artifact_name: macos-x86_64
             bin: simulator
           - os: [build-only, macOS]
-            container: ""
             target: aarch64-apple-darwin
             artifact_name: macos-aarch64
             bin: simulator
@@ -181,7 +231,7 @@ jobs:
 
   publish:
     name: Publish GitHub release
-    needs: [build-unix, windows]
+    needs: [build-unix, build-macos, windows]
     runs-on:
       group: default
       labels: [build-only, Linux, X64]
