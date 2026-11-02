@@ -15,7 +15,9 @@ concurrency:
 jobs:
   test-gate:
     name: Test gate (Linux x86_64)
-    runs-on: [build-only, Linux, X64]
+    runs-on:
+      group: default
+      labels: [build-only, Linux, X64]
     container: rust:1.96.0-bookworm
     timeout-minutes: 60
     steps:
@@ -38,7 +40,9 @@ jobs:
   build-unix:
     name: Build ${{ matrix.artifact_name }}
     needs: test-gate
-    runs-on: ${{ matrix.os }}
+    runs-on:
+      group: default
+      labels: ${{ matrix.os }}
     container: ${{ matrix.container }}
     timeout-minutes: 60
     strategy:
@@ -178,7 +182,9 @@ jobs:
   publish:
     name: Publish GitHub release
     needs: [build-unix, windows]
-    runs-on: [build-only, Linux, X64]
+    runs-on:
+      group: default
+      labels: [build-only, Linux, X64]
     container: rust:1.96.0-bookworm
     timeout-minutes: 30
     permissions:

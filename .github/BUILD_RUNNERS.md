@@ -1,6 +1,6 @@
 # Build worker requirements
 
-All jobs select NETIX build workers. No job falls back to a GitHub-hosted runner.
+All jobs select NETIX build workers. Docker-dependent Linux jobs and mixed release matrices select runner group `default`; the unrelated `e2e-worker` group has no Docker and cannot initialize job containers. Native release workers used by those matrices must belong to group `default`. No job falls back to a GitHub-hosted runner.
 
 - `[build-only, Linux, X64]`: Linux x86_64 workers need Docker job-container support. Rust/GUI dependencies install inside the job container; host sudo is not required. Docker image workflows additionally need a working Docker daemon and Buildx.
 - `[build-only, Linux, ARM64]`: native Linux ARM64 worker required for the existing ARM64 release/image targets. These jobs do not claim that an x86 worker can execute ARM64 without an emulator.
