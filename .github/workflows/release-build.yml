@@ -16,7 +16,7 @@ jobs:
   test-gate:
     name: Test gate (Linux x86_64)
     runs-on:
-      group: default
+      group: e2e-worker
       labels: [build-only, Linux, X64]
     container: rust:1.96.0-bookworm
     timeout-minutes: 60
@@ -41,7 +41,7 @@ jobs:
     name: Build ${{ matrix.artifact_name }}
     needs: test-gate
     runs-on:
-      group: default
+      group: e2e-worker
       labels: ${{ matrix.os }}
     container: ${{ matrix.container }}
     timeout-minutes: 60
@@ -233,7 +233,7 @@ jobs:
     name: Publish GitHub release
     needs: [build-unix, build-macos, windows]
     runs-on:
-      group: default
+      group: e2e-worker
       labels: [build-only, Linux, X64]
     container: rust:1.96.0-bookworm
     timeout-minutes: 30
