@@ -1,0 +1,3 @@
+[net]
+# Use Git's HTTPS transport for pinned dependencies on self-hosted workers.
+git-fetch-with-cli = true
