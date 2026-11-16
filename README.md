@@ -1,7 +1,7 @@
 # NETIX Simulator
 
 One binary that serves a single config-driven device simulation over **any**
-registered industrial protocol — **BACnet/IP, Modbus TCP, OPC UA** — selected in
+registered industrial protocol, **BACnet/IP, Modbus TCP, OPC UA**, selected in
 config. Interactive ratatui TUI plus a headless mode.
 
 The protocol adapters and simulation engine live in
@@ -33,19 +33,19 @@ Omitting `protocols:` defaults to BACnet on 47808.
 
 ## Releases
 
-Tagged releases (`v*`) publish platform zip files only — for example
+Tagged releases (`v*`) publish platform zip files only, for example
 `netix-simulator-<tag>-linux-x86_64.zip`, `...-linux-aarch64.zip`,
 `...-macos-x86_64.zip`, `...-macos-aarch64.zip`, and `...-windows-x86_64.zip`
-— plus a `SHA256SUMS` checksum file and build-provenance attestation. GitHub's
+, plus a `SHA256SUMS` checksum file and build-provenance attestation. GitHub's
 auto-generated "Source code" archives are removed; extract the zip for your
 platform and run `simulator` (Linux/macOS) or `simulator.exe` (Windows).
 
 ### Protocol notes
 
-- **BACnet/IP** — Who-Is/I-Am discovery, object-list browse, ReadProperty(Multiple).
-- **Modbus TCP** — register map derived from the simulation; per-point datatype
+- **BACnet/IP**: Who-Is/I-Am discovery, object-list browse, ReadProperty(Multiple).
+- **Modbus TCP**: register map derived from the simulation; per-point datatype
   (u16/i16/u32/i32/f32), word order, and scale.
-- **OPC UA** — anonymous + None-security endpoint by default; one folder per
+- **OPC UA**: anonymous + None-security endpoint by default; one folder per
   device (variables nested inside). The node namespace is kept distinct from the
   application URI so value reads route correctly; set `options.host` to advertise
   a reachable address to external clients (e.g. UaExpert).
