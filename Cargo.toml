@@ -19,10 +19,10 @@ winresource = "0.1"
 # Pin protocol-core’s published MQTT client migration and upstream ratatui upgrade.
 # This removes the vulnerable lru and webpki dependency lines. Only the
 # simulator-side (`sim`) feature of each adapter is enabled.
-sim-core = { git = "https://github.com/NETIX-AI-OSS/netix-protocol-core", tag = "v0.1.6-core" }
-proto-bacnet = { git = "https://github.com/NETIX-AI-OSS/netix-protocol-core", tag = "v0.1.6-core", features = ["sim"] }
-proto-modbus = { git = "https://github.com/NETIX-AI-OSS/netix-protocol-core", tag = "v0.1.6-core", features = ["sim"] }
-proto-opcua = { git = "https://github.com/NETIX-AI-OSS/netix-protocol-core", tag = "v0.1.6-core", features = ["sim"] }
+sim-core = { git = "https://github.com/NETIX-AI-OSS/netix-protocol-core", rev = "5cecfc47a20c5b3e184e3473a8d83ae16dc20ca4" }
+proto-bacnet = { git = "https://github.com/NETIX-AI-OSS/netix-protocol-core", rev = "5cecfc47a20c5b3e184e3473a8d83ae16dc20ca4", features = ["sim"] }
+proto-modbus = { git = "https://github.com/NETIX-AI-OSS/netix-protocol-core", rev = "5cecfc47a20c5b3e184e3473a8d83ae16dc20ca4", features = ["sim"] }
+proto-opcua = { git = "https://github.com/NETIX-AI-OSS/netix-protocol-core", rev = "5cecfc47a20c5b3e184e3473a8d83ae16dc20ca4", features = ["sim"] }
 
 log = "0.4"
 env_logger = "0.11"
